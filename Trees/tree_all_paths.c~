@@ -1,0 +1,95 @@
+/*program to print all of its root-to-leaf paths for a tree*/
+#include <stdio.h>
+#include <stdlib.h>
+
+/*
+initialize: pathlen = 0, path[1000]
+
+//printPathsRecur traverses nodes of tree in PREORDER //
+printPathsRecur(tree, path[], pathlen)
+   1) If node is not NULL then 
+         a) push data to path array: 
+                path[pathlen] = node->data.
+         b) increment pathlen 
+                pathlen++
+   2) If node is a leaf node then print the path array.
+   3) Else
+        a) Call printPathsRecur for left subtree
+                 printPathsRecur(node->left, path, pathLen)
+        b) Call printPathsRecur for right subtree.
+                printPathsRecur(node->right, path, pathLen)
+
+ A binary tree node has data, pointer to left child
+   and a pointer to right child 
+*/
+struct node
+{
+    int data;
+    struct node* left;
+    struct node* right;
+};
+ 
+void printArray(int [], int);
+void printPathsRecur(struct node*, int [], int);
+struct node* newNode(int );
+void printPaths(struct node*);
+
+/* Helper function that allocates a new node with the
+   given data and NULL left and right pointers. */
+struct node* newNode(int data)
+{
+  struct node* node = (struct node*)malloc(sizeof(struct node));
+  node->data = data;
+  node->left = NULL;
+  node->right = NULL;
+ 
+  return(node);
+}
+
+void printPaths(struct node* node)
+{
+	int path[1000];
+	printPathsRecur(node,path,0);
+}
+
+void printPathsRecur(struct node* node, int path[], int pathlen)
+{
+	if (node==NULL)
+		return;
+	
+	path[pathlen]=node->data;
+	pathlen++;
+
+	if(node->left==NULL && node->right==NULL)
+		printArray(path,pathlen);
+	else
+	{
+		printPathsRecur(node->left,path,pathlen); //PREORDER!!!!!!
+		printPathsRecur(node->right,path,pathlen);
+	}
+}
+
+void printArray(int path[], int pathlen)
+{
+	int i;
+	for(i=0;i<pathlen;i++)
+	{
+		printf("%d--> ",path[i]);
+	}
+	printf("\n");
+}
+
+/* Driver program to test mirror() */
+int main()
+{
+  struct node *root = newNode(10);
+  root->left        = newNode(8);
+  root->right       = newNode(2);
+  root->left->left  = newNode(3);
+  root->left->right = newNode(5);
+  root->right->left = newNode(2);
+
+  /* Print all root-to-leaf paths of the input tree */
+  printPaths(root);
+  return 0;
+}

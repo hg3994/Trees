@@ -1,0 +1,54 @@
+#include<iostream>
+
+using namespace std;
+
+struct Node{
+	int data;
+	struct Node *left;
+	struct Node *right;
+};
+
+Node* newNode(int data){
+	Node *temp= new(Node);
+	temp->data=data;
+	temp->left=NULL;
+	temp->right=NULL;
+	return temp;
+}
+
+int tosumtree(struct Node *root){
+	if(root->left!=NULL || root->right!=NULL){
+		return (tosumtree(root->left)+tosumtree(root->right));
+	}
+	if(root->left ==NULL && root->right==NULL){
+		return root->data;
+	}
+}
+
+void printinorder(struct Node* root){
+	if(root==NULL)
+		return ;
+	else{
+		printinorder(root->left);
+		
+		cout<<root->data<<endl;
+		
+		printinorder(root->right);
+}
+
+int main(){
+ 	struct node *root = NULL;
+  	int x;
+ 
+  /* Constructing tree given in the above figure */
+	root = newNode(10);
+	root->left = newNode(-2);
+	root->right = newNode(6);
+	root->left->left = newNode(8);
+	root->left->right = newNode(-4);
+	root->right->left = newNode(7);
+	root->right->right = newNode(5);
+ 
+	tosumtree(root);
+	return 0;
+}

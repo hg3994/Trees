@@ -1,0 +1,82 @@
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+	int data;
+	struct node *left,*right;
+};
+
+struct node* newnode(int key){
+	struct node *temp;
+	temp= (struct node *) malloc(sizeof(struct node));
+	temp->data=key;
+	temp->left=temp->right=NULL;
+	return temp;
+}
+
+struct node* insert(struct node *node, int key){
+	if (node==NULL)
+		return newnode(key); //creation of a new node here
+	if(key >node->data)
+		node->right= insert(node->right,key);
+	if(key< node->data)
+		node->left= insert(node->left,key);
+	
+	return node;
+}
+
+struct node* search(struct node* root, int key)
+{
+    // Base Cases: root is null or key is present at root
+    if (root == NULL || root->data == key)
+       return root;
+    
+    // Key is greater than root's key
+    if (root->data< key)
+       return search(root->right, key);
+ 
+    // Key is smaller than root's key
+    return search(root->left, key);
+}
+
+void traverse(struct node* node){
+	if(node!=NULL){
+		traverse(node->left);
+		printf("%d ",node->data);
+		traverse(node->right);
+	}
+}
+int main(void){
+	int i,n=1,key,first=1;
+	struct node *root=NULL;
+	while(n){
+		printf("Enter 1 to Enter a Node in the BST\n");
+		printf("Enter 2 to Search a Node in the BST\n");
+		printf("Enter 3 to Traverse the BST\n");
+		printf("Enter 0 to EXIT!\n");
+		scanf("%d",&n);
+		switch(n){
+			case 1: printf("Enter the value of the Node\n");
+				if(first==1){
+					scanf("%d",&key);
+					root=insert(root,key);
+					first=0;
+				}
+				else{
+					scanf("%d",&key);
+					insert(root,key);
+				}
+				break;
+			case 2: printf("Enter the value to be searched\n");
+				struct node *x;
+				scanf("%d",&key);
+				x=search(root,key);
+				if(x==0) printf("Not Found\n");
+				else printf("Found\n");
+				break;
+			case 3: traverse(root);
+				break;
+		}
+	}
+	return 0;
+}

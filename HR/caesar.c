@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+int main() {
+    int n,k,i,x;
+    scanf("%d",&n);
+    char a[n];
+    scanf("%s",a);
+    scanf("%d",&k);
+	while(k>26) //if key=87, make it 87-26-26-26=9(make it within 1-26
+		k=k%26;
+    for(i=0;i<n;i++){
+        if(isupper(a[i])){// uppercases changing
+            x=a[i];
+            if((a[i]+k)>90)
+                a[i]=((a[i]+k)%90)+64; //must be 64
+            else
+                a[i]=a[i]+k;
+        }
+        if(islower(a[i])){ //lower cases
+            x=a[i];
+            if((a[i]+k)>122)
+                a[i]=((a[i]+k)%122)+96; //must be 96 and not 97.
+            else
+                a[i]=a[i]+k;
+        }
+    }
+    for(i=0;i<n;i++){
+        printf("%c",a[i]);
+    }
+    return 0;
+}
+
